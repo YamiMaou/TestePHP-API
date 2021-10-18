@@ -13,9 +13,38 @@ class CategoryTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
+    private $uri = "/api/category";
+    public function test_cat_index()
     {
-        $response = $this->get('/');
+        $response = $this->get($this->uri);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_cat_create()
+    {
+        $response = $this->post($this->uri,["name" => "CAT_TEST"]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_cat_show()
+    {
+        $response = $this->get("{$this->uri}/1");
+
+        $response->assertStatus(200);
+    }
+
+    public function test_cat_update()
+    {
+        $response = $this->patch("{$this->uri}/1",["name" => "CAT_TEST_UPT"]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_cat_delete()
+    {
+        $response = $this->delete("{$this->uri}/1",["name" => "CAT_TEST_UPT"]);
 
         $response->assertStatus(200);
     }
