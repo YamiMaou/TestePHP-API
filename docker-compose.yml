@@ -1,0 +1,35 @@
+version: '3'
+services: 
+  web:
+    container_name: web
+    restart: always
+    build: .
+    volumes: 
+      - ./:/var/www/
+    depends_on: 
+      - db
+
+  db:
+    container_name: db
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "Teste@2021"
+      MYSQL_DATABASE: "teste_laravel"
+    expose:
+      - 3306
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./.docker/mysql:/var/lib/mysql
+
+  nginx:
+    container_name: nginx
+    build: ./.docker/nginx
+    restart: always
+    ports:
+      - "8000:80"
+    volumes: 
+      - ./:/var/www
+    depends_on: 
+      - web
